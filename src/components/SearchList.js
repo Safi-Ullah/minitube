@@ -43,7 +43,7 @@ class SearchList extends React.Component {
         const query = this.state.query;
 
         return (
-            `${base_url}?part=${part}&q=${query}&type=${type}&videoCaption=${videoCaption}&maxResults=${totalResults}&order=viewCount&key=${key}`
+            `${base_url}/search?part=${part}&q=${query}&type=${type}&videoCaption=${videoCaption}&maxResults=${totalResults}&order=viewCount&key=${key}`
         );
     }
 
@@ -97,10 +97,12 @@ class SearchList extends React.Component {
                         {
                             results.map(result => {
                                 return (
-                                    <ListGroupItem key={results.indexOf(result)} onClick={() =>
-                                        this.itemSelect(result.id.videoId,
-                                            result.snippet.description,
-                                            result.snippet.title)}>
+                                    <ListGroupItem key={results.indexOf(result)} 
+                                        active={result.id.videoId === this.props.videoId}
+                                        onClick={() =>
+                                            this.itemSelect(result.id.videoId,
+                                                result.snippet.description,
+                                                result.snippet.title)}>
                                         <Row>
                                             <Col xs={3}>
                                                 <Image alt={result.snippet.name} responsive

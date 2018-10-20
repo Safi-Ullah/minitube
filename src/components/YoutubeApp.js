@@ -50,6 +50,7 @@ class YoutubeApp extends React.Component {
                         }
                         <Col sm={this.state.show ? 5 : 6}>
                             <SearchList setVideoDetails={this.setVideoDetails}
+                                videoId={this.state.videoId}
                                 items={this.state.items} nextPage={this.nextPage}
                                 prevPage={this.prevPage} />
                         </Col>
