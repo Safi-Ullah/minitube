@@ -116,8 +116,8 @@ class SearchList extends React.Component {
                         }
                     </ListGroup>
                     <Pager>
-                        <Pager.Item previous onClick={this.prevPage}>&larr; Previous</Pager.Item>
-                        <Pager.Item next onClick={this.nextPage}>Next &rarr;</Pager.Item>
+                        <Pager.Item previous disabled={!this.state.prevPageToken} onClick={this.prevPage}>&larr; Previous</Pager.Item>
+                        <Pager.Item next disabled={!this.state.nextPageToken} onClick={this.nextPage}>Next &rarr;</Pager.Item>
                     </Pager>
                 </div>
             )
