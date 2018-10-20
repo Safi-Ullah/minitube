@@ -5,14 +5,9 @@ body {
 }
 
 .loading-component {
-  position: fixed !important;
-  margin: auto !important;
-  width: 100px;
-  height: 40px;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  position: absolute !important;
+  left: 50%;
+  top: 50%;
   z-index: 9999;
 }
 
