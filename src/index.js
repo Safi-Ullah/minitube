@@ -6,6 +6,5 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 
 ReactDOM.render(
-  <YoutubeApp/>,
-  document.getElementById('root'),
+  <YoutubeApp/>, document.getElementById('root'),
 );

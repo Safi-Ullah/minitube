@@ -6,7 +6,6 @@ import { Row, Col } from 'react-bootstrap'
 class YoutubeApp extends React.Component {
     constructor(props) {
         super(props);
-        this.setVideoDetails = this.setVideoDetails.bind(this);
         this.state = {
             videoId: '',
             videoDesc: '',
@@ -15,12 +14,10 @@ class YoutubeApp extends React.Component {
         };
     }
 
-    setVideoDetails(videoId, videoTitle, videoDesc) {
-        this.setState({
-            videoId, show: true,
-            videoTitle, videoDesc
-        });
-    }
+    setVideoDetails = (videoId, videoTitle, videoDesc) => this.setState({
+        videoId, show: true,
+        videoTitle, videoDesc
+    });
 
     render() {
         return (
@@ -59,6 +56,6 @@ class YoutubeApp extends React.Component {
             </div>
         );
     }
-}
+};
 
 export default YoutubeApp;

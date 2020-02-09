@@ -1,20 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 import SearchBar from './SearchBar';
-import { youtubeConfig } from '../config';
+import { prepareSearchGETRequest, decodeHtml } from '../utils';
 import {
     ListGroup, ListGroupItem,
     Row, Image, Col, Pager
 } from 'react-bootstrap';
-import { SyncLoader } from 'halogenium';
+import { BeatLoader } from 'halogenium';
 
 class SearchList extends React.Component {
     constructor(props) {
         super(props);
-        this.nextPage = this.nextPage.bind(this);
-        this.prevPage = this.prevPage.bind(this);
-        this.setQuery = this.setQuery.bind(this);
-        this.search = this.search.bind(this);
         this.state = {
             query: '',
             items: [],
@@ -28,26 +24,11 @@ class SearchList extends React.Component {
         this.search();
     }
 
-    itemSelect(videoId, videoDesc, videoTitle) {
-        this.props.setVideoDetails(videoId, videoTitle, videoDesc);
-    }
+    itemSelect = (videoId, videoDesc, videoTitle) => this.props.setVideoDetails(videoId, videoTitle, videoDesc);
 
-    setQuery(e) {
-        this.setState({ 'query': e.target.value });
-    }
+    setQuery = e => this.setState({ 'query': e.target.value });
 
-    prepareGETRequest() {
-        const { part, type, videoCaption, totalResults } = youtubeConfig;
-        const base_url = youtubeConfig.youtubeAPIUrl;
-        const key = youtubeConfig.apiKey;
-        const query = this.state.query;
-
-        return (
-            `${base_url}/search?part=${part}&q=${query}&type=${type}&videoCaption=${videoCaption}&maxResults=${totalResults}&order=viewCount&key=${key}`
-        );
-    }
-
-    sendRequest(requestUrl) {
+    sendRequest = requestUrl => {
         this.setState({ loading: true });
         axios.get(requestUrl).then(res => {
             this.setState({
@@ -56,48 +37,50 @@ class SearchList extends React.Component {
                 prevPageToken: res.data.prevPageToken
             });
         });
-    }
+    };
 
-    search(e) {
+    search = e => {
         if (e) {
             e.preventDefault();
         }
-        let requestUrl = this.prepareGETRequest();
+        let requestUrl = prepareSearchGETRequest(this.state.query);
         this.sendRequest(requestUrl);
-    }
+    };
 
-    nextPage(e) {
-        let getRequest = this.prepareGETRequest();
+    nextPage = e => {
+        let getRequest = prepareSearchGETRequest(this.state.query);
         if (this.state.nextPageToken) {
             getRequest += '&pageToken=' + this.state.nextPageToken;
         }
         this.sendRequest(getRequest);
         e.preventDefault();
-    }
+    };
 
-    prevPage(e) {
-        let getRequest = this.prepareGETRequest();
+    prevPage = e => {
+        let getRequest = prepareSearchGETRequest(this.state.query);
         if (this.state.prevPageToken) {
             getRequest += '&pageToken=' + this.state.prevPageToken;
         }
         this.sendRequest(getRequest);
         e.preventDefault();
-    }
+    };
 
     render() {
         let results = this.state.items;
         if (results && results.length) {
             return (
                 <div>
-                    {this.state.loading ? <div className='loading-component'><SyncLoader size="16px" color="#337ab7" /></div> : null}
+                    {
+                        this.state.loading &&
+                            <div className='loading-component'><BeatLoader size="16px" color="#337ab7" /></div>
+                    }
                     <SearchBar query={this.state.query}
                         setQuery={this.setQuery} search={this.search} />
-
                     <ListGroup>
                         {
                             results.map(result => {
                                 return (
-                                    <ListGroupItem key={results.indexOf(result)} 
+                                    <ListGroupItem key={results.indexOf(result)}
                                         active={result.id.videoId === this.props.videoId}
                                         onClick={() =>
                                             this.itemSelect(result.id.videoId,
@@ -109,7 +92,7 @@ class SearchList extends React.Component {
                                                     src={result.snippet.thumbnails.default.url} />
                                             </Col>
                                             <Col xs={9}>
-                                                <h4> {result.snippet.title}</h4>
+                                                <h4> {decodeHtml(result.snippet.title)}</h4>
                                             </Col>
                                         </Row>
                                     </ListGroupItem>
@@ -118,8 +101,12 @@ class SearchList extends React.Component {
                         }
                     </ListGroup>
                     <Pager>
-                        <Pager.Item previous disabled={!this.state.prevPageToken} onClick={this.prevPage}>&larr; Previous</Pager.Item>
-                        <Pager.Item next disabled={!this.state.nextPageToken} onClick={this.nextPage}>Next &rarr;</Pager.Item>
+                        <Pager.Item previous disabled={!this.state.prevPageToken} onClick={this.prevPage}>
+                            &larr; Previous
+                        </Pager.Item>
+                        <Pager.Item next disabled={!this.state.nextPageToken} onClick={this.nextPage}>
+                            Next &rarr;
+                        </Pager.Item>
                     </Pager>
                 </div>
             )
