@@ -9,7 +9,7 @@ A simple react youtube app that performs the following tasks:
 
 ## Demo & Example
 
-You can find the live demo of the app [here](https://minitube-demo.herokuapp.com)
+You can find the live demo of the app [here](https://miniyoutube.herokuapp.com/)
 
 ## Getting Started
 
