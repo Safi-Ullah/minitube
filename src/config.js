@@ -1,7 +1,7 @@
 export const youtubeConfig =
 {
     youtubeAPIUrl: 'https://www.googleapis.com/youtube/v3',
-    apiKey: 'AIzaSyCeB4ZSpyTmH12GH1drzoUdMPKTAU_vJRI',
+    apiKey: '--',
     part: 'snippet',
     type: 'video',
     videoCaption: 'closedCaption',
